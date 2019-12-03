@@ -83,24 +83,27 @@ class Property
       db.close
   end
 
-  def find()
+  def Property.find(id)
     db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
     sql = "SELECT * FROM properties WHERE id = $1;"
-    values = [@id]
+    values = [id]
     db.prepare("find", sql)
-    properties = db.exec_prepared("find", values)
+    results_array = db.exec_prepared("find", values)
     db.close
-    return properties.map {|property| Property.new(property)}
+    return nil if results_array.first() == nil
+    property_hash = results_array[0]
+    found_property = Property.new(found_property)
+    return found_property
   end
-
-  def find_by_build()
-    db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
-    sql = "SELECT * FROM properties WHERE build = $1;"
-    values = [@build]
-    db.prepare("find", sql)
-    properties = db.exec_prepared("find", values)
-    db.close
-    return properties.map {|property| Property.new(property)}
-  end
+  #
+  # def find_by_build(build)
+  #   db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
+  #   sql = "SELECT * FROM properties WHERE build = #{build}"
+  #   values = [@build]
+  #   db.prepare("find", sql)
+  #   properties = db.exec_prepared("find", values)
+  #   db.close
+  #   return properties.map {|property| Property.new(property)}
+  # end
 
 end

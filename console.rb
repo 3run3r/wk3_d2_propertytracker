@@ -22,11 +22,11 @@ property3 = Property.new({
      'buy_let_status' => 'let'
   })
 
-Property.delete_all()
+# Property.delete_all()
 
 property1.save()
 
-
+# two_bed_flat = Property.find(property1.id)
 
 
 binding.pry
