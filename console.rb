@@ -15,8 +15,19 @@ property2 = Property.new({
     'buy_let_status' => 'let'
   })
 
+property3 = Property.new({
+     'value' => '£800',
+     'number_of_bedrooms' => 3,
+     'build' => 'semi-detached',
+     'buy_let_status' => 'let'
+  })
+
+Property.delete_all()
+
 property1.save()
-property2.save()
+
+
+
 
 binding.pry
 nil

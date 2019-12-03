@@ -42,7 +42,65 @@ class Property
     db.prepare("all", sql)
     properties = db.exec_prepared("all")
     db.close
-    return properties.map{|property| Property.new(property)}
+    return properties.map {|property| Property.new(property)}
+  end
+
+  def delete()
+    db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
+    sql = "DELETE FROM properties WHERE id = $1;"
+    values = [@id]
+    db.prepare("delete", sql)
+    db.exec_prepared("delete", values)
+    db.close
+  end
+
+  def Property.delete_all()
+    db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
+    sql = "DELETE FROM properties;"
+    db.prepare("delete_all", sql)
+    db.exec_prepared("delete_all")
+    db.close
+  end
+
+  def update()
+    db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
+    sql =
+    "
+    UPDATE properties SET (
+      value,
+      number_of_bedrooms,
+      build,
+      buy_let_status
+      ) = (
+        $1,
+        $2,
+        $3,
+        $4
+      ) WHERE id = $5;"
+      values = [@value, @number_of_bedrooms, @build, @buy_let_status, @id]
+      db.prepare("update", sql)
+      db.exec_prepared("update", values)
+      db.close
+  end
+
+  def find()
+    db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
+    sql = "SELECT * FROM properties WHERE id = $1;"
+    values = [@id]
+    db.prepare("find", sql)
+    properties = db.exec_prepared("find", values)
+    db.close
+    return properties.map {|property| Property.new(property)}
+  end
+
+  def find_by_build()
+    db = PG.connect({dbname: 'property_tracker', host: 'localhost'})
+    sql = "SELECT * FROM properties WHERE build = $1;"
+    values = [@build]
+    db.prepare("find", sql)
+    properties = db.exec_prepared("find", values)
+    db.close
+    return properties.map {|property| Property.new(property)}
   end
 
 end
